@@ -2,9 +2,11 @@
 using loja_games.Service;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace loja_games.Controller
 {
+    [Authorize]
     [Route("~/produtos")]
     [ApiController]
     public class ProdutoController : ControllerBase
@@ -22,6 +24,7 @@ namespace loja_games.Controller
             _produtoValidator = produtoValidator;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult> GetAll()
         {

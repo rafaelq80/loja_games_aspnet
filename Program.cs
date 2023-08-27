@@ -6,6 +6,11 @@ using loja_games.Service.Implements;
 using loja_games.Service;
 using loja_games.Validator;
 using Microsoft.EntityFrameworkCore;
+using loja_games.Security;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using loja_games.Security.Implements;
 
 namespace loja_games
 {
@@ -35,10 +40,33 @@ namespace loja_games
             // Validação das Entidades
             builder.Services.AddTransient<IValidator<Produto>, ProdutoValidator>();
             builder.Services.AddTransient<IValidator<Categoria>, CategoriaValidator>();
+            builder.Services.AddTransient<IValidator<User>, UserValidator>();
 
             // Registrar as Classes e Interfaces Service
             builder.Services.AddScoped<IProdutoService, ProdutoService>();
             builder.Services.AddScoped<ICategoriaService, CategoriaService>();
+            builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IAuthService, AuthService>();
+
+            // Adicionar a Validação do Token JWT
+
+            builder.Services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(o =>
+            {
+                var Key = Encoding.UTF8.GetBytes(Settings.Secret);
+                o.SaveToken = true;
+                o.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Key),
+                };
+            });
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -73,7 +101,12 @@ namespace loja_games
                 app.UseSwaggerUI();
             }
 
+            // Habilitar o CORS
             app.UseCors("MyPolicy");
+
+            // Habilitar a Autenticação e a Autorização
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

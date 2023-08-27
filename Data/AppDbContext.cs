@@ -13,6 +13,7 @@ namespace loja_games.Data
             // Configura os nomes das tabelas
             modelBuilder.Entity<Produto>().ToTable("tb_produtos");
             modelBuilder.Entity<Categoria>().ToTable("tb_categorias");
+            modelBuilder.Entity<User>().ToTable("tb_usuarios");
 
             // Relacionamento Produto -> Categoria
             _ = modelBuilder.Entity<Produto>()
@@ -26,5 +27,6 @@ namespace loja_games.Data
         // Registro das Entidades
         public DbSet<Produto> Produtos { get; set; } = null!;
         public DbSet<Categoria> Categorias { get; set; } = null!;
+        public DbSet<User> Users { get; set; } = null!;
     }
 }
