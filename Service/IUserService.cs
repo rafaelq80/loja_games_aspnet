@@ -13,5 +13,7 @@ namespace loja_games.Service
         Task<User?> Create(User usuario);
 
         Task<User?> Update(User usuario);
+
+        Task Delete(User usuario);
     }
 }

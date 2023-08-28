@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace loja_games.Controllers
 {
 
+    [Authorize]
     [Route("~/usuarios")]
     [ApiController]
     public class UserController : ControllerBase
@@ -28,14 +29,12 @@ namespace loja_games.Controllers
             _authService = authService;
         }
 
-        [Authorize]
         [HttpGet("all")]
         public async Task<ActionResult> GetAll()
         {
             return Ok(await _userService.GetAll());
         }
 
-        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult> GetById(long id)
         {
@@ -66,7 +65,6 @@ namespace loja_games.Controllers
             return CreatedAtAction(nameof(GetById), new { id = Resposta.Id }, Resposta);
         }
 
-        [Authorize]
         [HttpPut("atualizar")]
         public async Task<ActionResult> Update([FromBody] User usuario)
         {
@@ -89,6 +87,20 @@ namespace loja_games.Controllers
                 return BadRequest("Usuário não encontrado!");
 
             return Ok(Resposta);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(long id)
+        {
+            var BuscaUsuario = await _userService.GetById(id);
+
+            if (BuscaUsuario is null)
+                return NotFound("Postagem não encontrada!");
+
+            await _userService.Delete(BuscaUsuario);
+
+            return NoContent();
+
         }
 
         [AllowAnonymous]

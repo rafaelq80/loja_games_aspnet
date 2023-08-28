@@ -91,5 +91,10 @@ namespace loja_games.Service.Implements
             return usuario;
         }
 
+        public async Task Delete(User usuario)
+        {
+            _context.Users.Remove(usuario);
+            await _context.SaveChangesAsync();
+        }
     }
 }
