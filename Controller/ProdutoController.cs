@@ -48,15 +48,15 @@ namespace loja_games.Controller
         }
 
         [HttpGet("nome/{nome}/econsole/{console}")]
-        public async Task<ActionResult> GetByNomeELaboratorio(string nome, string console)
+        public async Task<ActionResult> GetByNomeEConsole(string nome, string console)
         {
-            return Ok(await _produtoService.GetByNomeELaboratorio(nome, console));
+            return Ok(await _produtoService.GetByNomeEConsole(nome, console));
         }
 
         [HttpGet("nome/{nome}/ouconsole/{console}")]
-        public async Task<ActionResult> GetByNomeOuLaboratorio(string nome, string console)
+        public async Task<ActionResult> GetByNomeOuConsole(string nome, string console)
         {
-            return Ok(await _produtoService.GetByNomeOuLaboratorio(nome, console));
+            return Ok(await _produtoService.GetByNomeOuConsole(nome, console));
         }
 
         [HttpGet("preco_inicial/{precoInicial}/preco_final/{precoFinal}")]
@@ -76,7 +76,7 @@ namespace loja_games.Controller
             var Resposta = await _produtoService.Create(produto);
 
             if (Resposta is null)
-                return BadRequest("Tema não encontrado!");
+                return BadRequest("Categoria não encontrada!");
 
             return CreatedAtAction(nameof(GetById), new { id = produto.Id }, produto);
         }
@@ -95,7 +95,7 @@ namespace loja_games.Controller
             var Resposta = await _produtoService.Update(produto);
 
             if (Resposta is null)
-                return NotFound("Produto e/ou Tema não encontrados!");
+                return NotFound("Produto e/ou Categoria não encontrados!");
 
             return Ok(Resposta);
 
