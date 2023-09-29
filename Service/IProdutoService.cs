@@ -10,9 +10,9 @@ namespace loja_games.Service
 
         Task<IEnumerable<Produto>> GetByNome(string nome);
 
-        Task <IEnumerable<Produto>> GetByNomeELaboratorio(string nome, string console);
+        Task <IEnumerable<Produto>> GetByNomeEConsole(string nome, string console);
 
-        Task<IEnumerable<Produto>> GetByNomeOuLaboratorio(string nome, string console);
+        Task<IEnumerable<Produto>> GetByNomeOuConsole(string nome, string console);
 
         Task<IEnumerable<Produto>> GetByBetweenPreco(decimal precoInicial, decimal precoFinal);
 
