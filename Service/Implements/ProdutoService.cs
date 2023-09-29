@@ -46,7 +46,7 @@ namespace loja_games.Service.Implements
             return Produto;
         }
 
-        public async Task<IEnumerable<Produto>> GetByNomeELaboratorio(string nome, string console)
+        public async Task<IEnumerable<Produto>> GetByNomeEConsole(string nome, string console)
         {
             var Produto = await _context.Produtos
                 .Include(p => p.Categoria)
@@ -56,7 +56,7 @@ namespace loja_games.Service.Implements
             return Produto;
         }
 
-        public async Task<IEnumerable<Produto>> GetByNomeOuLaboratorio(string nome, string console)
+        public async Task<IEnumerable<Produto>> GetByNomeOuConsole(string nome, string console)
         {
             var Produto = await _context.Produtos
                 .Include(p => p.Categoria)
@@ -82,12 +82,12 @@ namespace loja_games.Service.Implements
             if (produto.Categoria is not null)
             {
                 var BuscaCategoria = await _context.Categorias.FindAsync(produto.Categoria.Id);
-
+            
                 if (BuscaCategoria is null)
                     return null;
+            
+                produto.Categoria = BuscaCategoria;
             }
-
-            produto.Categoria = produto.Categoria is not null ? _context.Categorias.FirstOrDefault(t => t.Id == produto.Categoria.Id) : null;
            
             await _context.Produtos.AddAsync(produto);
             await _context.SaveChangesAsync();
@@ -105,12 +105,12 @@ namespace loja_games.Service.Implements
             if (produto.Categoria is not null)
             {
                 var BuscaCategoria = await _context.Categorias.FindAsync(produto.Categoria.Id);
-
+            
                 if (BuscaCategoria is null)
                     return null;
+            
+                produto.Categoria = BuscaCategoria;
             }
-
-            produto.Categoria = produto.Categoria is not null ? _context.Categorias.FirstOrDefault(t => t.Id == produto.Categoria.Id) : null;
             
             _context.Entry(PostagemUpdate).State = EntityState.Detached;
             _context.Entry(produto).State = EntityState.Modified;
