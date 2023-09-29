@@ -20,7 +20,8 @@ namespace loja_games.Validator
 
             RuleFor(p => p.Preco)
                 .NotNull()
-                .GreaterThan(0);
+                .GreaterThan(0)
+                .PrecisionScale(20, 2, false);;
 
         }
 
