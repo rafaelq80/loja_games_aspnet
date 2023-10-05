@@ -43,10 +43,10 @@ namespace loja_games.Controller
             return Ok(Resposta);
         }
 
-        [HttpGet("nome/{nome}")]
-        public async Task<ActionResult> GetByNome(string nome)
+        [HttpGet("tipo/{tipo}")]
+        public async Task<ActionResult> GetByTipo(string tipo)
         {
-            return Ok(await _categoriaService.GetByNome(nome));
+            return Ok(await _categoriaService.GetByTipo(tipo));
         }
 
         [HttpPost]
@@ -57,9 +57,9 @@ namespace loja_games.Controller
             if (!validarCategoria.IsValid)
                 return StatusCode(StatusCodes.Status400BadRequest, validarCategoria);
 
-            var Resposta = await _categoriaService.Create(categoria);
+            await _categoriaService.Create(categoria);
 
-            return CreatedAtAction(nameof(GetById), new { id = Resposta.Id }, Resposta);
+            return CreatedAtAction(nameof(GetById), new { id = categoria.Id }, categoria);
         }
 
         [HttpPut]

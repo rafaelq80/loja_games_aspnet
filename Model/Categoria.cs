@@ -11,7 +11,7 @@ namespace loja_games.Model
 
         [Column(TypeName = "varchar")]
         [StringLength(255)]
-        public string Nome { get; set; } = string.Empty;
+        public string Tipo { get; set; } = string.Empty;
 
         [InverseProperty("Categoria")]
         public virtual ICollection<Produto>? Produto { get; set; }

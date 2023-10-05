@@ -7,7 +7,7 @@ namespace loja_games.Validator
     {
         public CategoriaValidator() {
 
-            RuleFor(p => p.Nome)
+            RuleFor(p => p.Tipo)
                 .NotEmpty();
         }
     }

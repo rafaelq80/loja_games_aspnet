@@ -77,6 +77,16 @@ namespace loja_games.Service.Implements
             return Produto;
         }
 
+        public async Task<IEnumerable<Produto>> GetByBetweenDataLancamento(DateTime dataInicial, DateTime dataFinal)
+        {
+            var Produto = await _context.Produtos
+               .Include(p => p.Categoria)
+               .Where(p => p.DataLancamento >= dataInicial && p.DataLancamento <= dataFinal)
+               .ToListAsync();
+
+            return Produto;
+        }
+
         public async Task<Produto?> Create(Produto produto)
         {
             if (produto.Categoria is not null)
@@ -85,10 +95,10 @@ namespace loja_games.Service.Implements
 
                 if (BuscaCategoria is null)
                     return null;
+
+                produto.Categoria = BuscaCategoria;
             }
 
-            produto.Categoria = produto.Categoria is not null ? _context.Categorias.FirstOrDefault(t => t.Id == produto.Categoria.Id) : null;
-           
             await _context.Produtos.AddAsync(produto);
             await _context.SaveChangesAsync();
 
@@ -108,10 +118,10 @@ namespace loja_games.Service.Implements
 
                 if (BuscaCategoria is null)
                     return null;
+
+                produto.Categoria = BuscaCategoria;
             }
 
-            produto.Categoria = produto.Categoria is not null ? _context.Categorias.FirstOrDefault(t => t.Id == produto.Categoria.Id) : null;
-            
             _context.Entry(PostagemUpdate).State = EntityState.Detached;
             _context.Entry(produto).State = EntityState.Modified;
             await _context.SaveChangesAsync();
@@ -124,6 +134,24 @@ namespace loja_games.Service.Implements
         {
             _context.Produtos.Remove(produto);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<Produto?> Curtir(long id)
+        {
+            var Produto = await _context.Produtos
+             .Include(p => p.Categoria)
+             .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (Produto is null)
+                return null;
+
+            Produto.Curtir += 1;
+
+            _context.Update(Produto);
+            await _context.SaveChangesAsync();
+
+            return Produto;
+
         }
     }
 }

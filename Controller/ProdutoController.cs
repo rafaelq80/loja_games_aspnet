@@ -68,6 +68,12 @@ namespace loja_games.Controller
             return Ok(await _produtoService.GetByBetweenPreco(precoInicial, precoFinal));
         }
 
+        [HttpGet("data_inicial/{dataInicial}/data_final/{dataFinal}")]
+        public async Task<ActionResult> GetByBetweenDataLancamento(DateTime dataInicial, DateTime dataFinal)
+        {
+            return Ok(await _produtoService.GetByBetweenDataLancamento(dataInicial, dataFinal));
+        }
+
         [HttpPost]
         public async Task<ActionResult> Create([FromBody] Produto produto)
         {
@@ -116,6 +122,19 @@ namespace loja_games.Controller
 
             return NoContent();
 
+        }
+
+        [HttpPut("curtir/{id}")]
+        public async Task<ActionResult> Curtir(long id)
+        {
+            var Resposta = await _produtoService.Curtir(id);
+
+            if (Resposta is null)
+            {
+                return NotFound("Produto não encontrado!");
+            }
+
+            return Ok(Resposta);
         }
 
     }

@@ -16,10 +16,14 @@ namespace loja_games.Service
 
         Task<IEnumerable<Produto>> GetByBetweenPreco(decimal precoInicial, decimal precoFinal);
 
+        Task<IEnumerable<Produto>> GetByBetweenDataLancamento(DateTime dataInicial, DateTime dataFinal);
+
         Task<Produto?> Create(Produto produto);
 
         Task<Produto?> Update(Produto produto);
 
         Task Delete(Produto produto);
+
+        Task<Produto?> Curtir(long id);
     }
 }
